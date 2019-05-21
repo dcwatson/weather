@@ -58,4 +58,12 @@ class Weather (models.Model):
     date_fetched = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return '{} and {} ({}% humidity)'.format(self.data['temp_f'], self.data['weather'], self.data['relative_humidity'])
+        conditions = ' and {}'.format(self.data['weather']) if 'weather' in self.data else ''
+        chill = ', wind chill {}'.format(self.data['windchill_f']) if 'windchill_f' in self.data else ''
+        return '{}{} ({}% humidity, dewpoint {}{})'.format(
+            self.data['temp_f'],
+            conditions,
+            self.data['relative_humidity'],
+            self.data['dewpoint_f'],
+            chill
+        )
